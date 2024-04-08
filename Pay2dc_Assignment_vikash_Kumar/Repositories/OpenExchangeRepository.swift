@@ -9,11 +9,6 @@ import Foundation
 
 
 
-protocol Repository {
-    func fetchCurrencies() async -> Result<[String: String], Error>
-    func fetchRates(base: String) async -> Result<[String: Any], Error>
-}
-
 class OpenExchangeRepository: Repository {
     let appId: String
     init(appId: String) {

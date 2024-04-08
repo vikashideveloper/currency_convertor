@@ -20,3 +20,8 @@ extension Currency {
         self.name = name
     }
 }
+
+
+protocol CurrencyProtocol {
+    var code: String { get set }
+}
