@@ -19,7 +19,8 @@ class CurrencyConvertorViewModel: ObservableObject {
     }
     
     private let defaultBase = "USD"
-
+    private var canFetchFromRemote = false
+    
     @Published var amountToConvert: String = "" {
         didSet {
             if amount > 0 {
@@ -71,10 +72,19 @@ class CurrencyConvertorViewModel: ObservableObject {
 
 // connection to repository
 extension CurrencyConvertorViewModel {
+    func fetchCurrencyConvertorData() async {
+        canFetchFromRemote = dataService.checkIfNeedToFetchFromRemote()
+        await fetchCurrencies()
+        await fetchRates()
+        if canFetchFromRemote {
+            dataService.updateLastStorageTime()
+        }
+    }
+    
     func fetchCurrencies() async {
         clearError()
         loadingCurrencies = true
-        let result =  await dataService.fetchCurrencies()
+        let result =  await dataService.fetchCurrencies(canFetchFromRemote)
         loadingCurrencies = false
 
         switch result {
@@ -86,13 +96,12 @@ extension CurrencyConvertorViewModel {
             }
         case .failure(let error):
             self.error = error
-
         }
     }
     
     func fetchRates() async {
         loadingRates = true
-        let result = await dataService.fetchRates(base: defaultBase)
+        let result = await dataService.fetchRates(base: defaultBase, fromRemote: canFetchFromRemote)
         loadingRates = false
 
         switch result {
@@ -119,7 +128,8 @@ extension CurrencyConvertorViewModel {
 
 extension CurrencyConvertorViewModel {
     static func instantiateWithDI() -> CurrencyConvertorViewModel {
-        let repository = OpenExchangeRepository(appId: Constants.OE_APP_ID)
+        let appId = Utility.infoForKey("OE_APP_ID")
+        let repository = OpenExchangeRepository(appId: appId)
         let storage = CoreDataStorage()
         let viewModel = CurrencyConvertorViewModel(service: DataService(repository: repository, store: storage))
         return viewModel

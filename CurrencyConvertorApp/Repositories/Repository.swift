@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 protocol Repository {
     func fetchCurrencies() async -> Result<[String: String], Error>
     func fetchRates(base: String) async -> Result<[String: Any], Error>

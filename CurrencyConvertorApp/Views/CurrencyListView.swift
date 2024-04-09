@@ -52,10 +52,10 @@ struct CurrencyListView: View {
 
 #Preview {
     let viewModel = CurrencyConvertorViewModel.instantiateWithDI()
-    let c1: Currency = CoreDataStorage().create()
+    let c1: Currency = CoreDataStorage().createEntity()
     c1.set(code: "USD", name: "United State Dollar")
     
-    let c2: Currency = CoreDataStorage().create()
+    let c2: Currency = CoreDataStorage().createEntity()
     c2.set(code: "INR", name: "Indian Ruppes")
 
     viewModel.currencies = [c1, c2]

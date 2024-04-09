@@ -8,7 +8,6 @@
 import Foundation
 import CoreData
 
-
 class CoreDataStorage: NSObject, LocalStore {
     let container = NSPersistentContainer(name: "CurrencyConvertor")
     
@@ -23,12 +22,10 @@ class CoreDataStorage: NSObject, LocalStore {
     
     func saveCurrencies(_ currencies: [Currency]) {
        try? viewContext.save()
-        updateLastStorageTime()
     }
     
     func saveRateResponse(_ response: RateResponse) {
        try? viewContext.save()
-        updateLastStorageTime()
     }
     
     func fetchCurrencies() -> [Currency]? {
@@ -65,7 +62,7 @@ class CoreDataStorage: NSObject, LocalStore {
 
 // model intializer to create CoreData entity object
 extension CoreDataStorage {
-    func create<T: NSManagedObject>()-> T {
+    func createEntity<T: NSManagedObject>()-> T {
         return T(context: viewContext)
     }
 }

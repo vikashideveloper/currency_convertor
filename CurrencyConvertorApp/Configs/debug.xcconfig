@@ -1,0 +1,12 @@
+//
+//  debug.xcconfig
+//  CurrencyConvertorApp
+//
+//  Created by Vikash Kumar on 09/04/24.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+OE_APP_ID = 7109897501984b519abbfcbf348d6dce
+OE_API_BASE_URL = https:\/\/openexchangerates.org/api/

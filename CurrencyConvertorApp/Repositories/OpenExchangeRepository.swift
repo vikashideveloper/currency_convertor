@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 class OpenExchangeRepository: Repository {
     let appId: String
     init(appId: String) {
@@ -61,7 +59,7 @@ class OpenExchangeRepository: Repository {
 
 extension OpenExchangeRepository {
     private enum API {
-        private var domain: String { CurrencyRateSource.openExchange.domain}
+        private var domain: String { Utility.infoForKey("OE_BASE_URL")}
         
         case latest, currencies
         
@@ -76,15 +74,3 @@ extension OpenExchangeRepository {
     }
 }
 
-
-// CurrencySource
-enum CurrencyRateSource {
-    case openExchange
-    
-    var domain: String {
-        switch self {
-        case .openExchange:
-            return "https://openexchangerates.org/api/"
-        }
-    }
-}

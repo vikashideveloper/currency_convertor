@@ -96,18 +96,14 @@ struct HomeView: View {
         .onAppear {
             Task {
                 // fetch currencies and rates
-                await viewModel.fetchCurrencies()
-                await viewModel.fetchRates()
+                await viewModel.fetchCurrencyConvertorData()
             }
         }
     }
 }
 
 #Preview {
-    let repository = OpenExchangeRepository(appId: Constants.OE_APP_ID)
-    let storage = CoreDataStorage()
-    let viewModel = CurrencyConvertorViewModel(service: DataService(repository: repository, store: storage))
-    
+    let viewModel = CurrencyConvertorViewModel.instantiateWithDI()
     return HomeView()
         .environmentObject(viewModel)
 }

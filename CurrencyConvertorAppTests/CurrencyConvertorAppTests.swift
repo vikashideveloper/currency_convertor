@@ -55,7 +55,7 @@ final class CurrencyConvertorAppTests: XCTestCase {
         await viewModel.fetchRates()
         
         viewModel.amountToConvert = "1"
-        viewModel.selectedCurrency = viewModel.dataService.localStore.create()
+        viewModel.selectedCurrency = mockLocalStore.createEntity()
        
         // set the base currency INR
         viewModel.selectedCurrency?.set(code: "INR", name: "Indian Ruppes")
@@ -80,7 +80,7 @@ final class CurrencyConvertorAppTests: XCTestCase {
         await viewModel.fetchRates()
         
         viewModel.amountToConvert = "0"
-        viewModel.selectedCurrency = viewModel.dataService.localStore.create()
+        viewModel.selectedCurrency = mockLocalStore.createEntity()
         viewModel.selectedCurrency?.set(code: "INR", name: "Indian Ruppes")
         viewModel.convertRates()
        
@@ -95,7 +95,7 @@ final class CurrencyConvertorAppTests: XCTestCase {
         await viewModel.fetchRates()
         
         viewModel.amountToConvert = "0"
-        viewModel.selectedCurrency = viewModel.dataService.localStore.create()
+        viewModel.selectedCurrency = mockLocalStore.createEntity()
         viewModel.selectedCurrency?.set(code: "INVALIDCODE", name: "Indian Ruppes")
         viewModel.convertRates()
        
@@ -108,7 +108,7 @@ final class CurrencyConvertorAppTests: XCTestCase {
 
         Task {
             try await Task.sleep(nanoseconds: 5000000000) // sleep for 5 seconds
-            let result = mockLocalStore.checkIfNeedToFetchLatest() // it return true if time is exceeded 3 second
+            let result = mockLocalStore.checkIfNeedToFetchFromRemote() // it should return true if time is exceeded 3 seconds
             
             if result {
                 expectation.fulfill()

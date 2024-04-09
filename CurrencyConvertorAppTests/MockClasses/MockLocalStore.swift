@@ -10,12 +10,11 @@ import CoreData
 @testable import CurrencyConvertorApp
 
 class MockLocalStore: LocalStore {
-    lazy var mockPersistantContainer: NSPersistentContainer = {
+   private lazy var mockPersistantContainer: NSPersistentContainer = {
             let container = NSPersistentContainer(name: "CurrencyConvertor")
             let description = NSPersistentStoreDescription()
             description.type = NSInMemoryStoreType
             description.shouldAddStoreAsynchronously = false
-            
             container.persistentStoreDescriptions = [description]
             container.loadPersistentStores { (description, error) in
                 precondition( description.type == NSInMemoryStoreType )
@@ -26,13 +25,9 @@ class MockLocalStore: LocalStore {
             return container
         }()
 
-    func saveCurrencies(_ currencies: [Currency]) {
-        
-    }
+    func saveCurrencies(_ currencies: [Currency]) { }
     
-    func saveRateResponse(_ response: RateResponse) {
-        
-    }
+    func saveRateResponse(_ response: RateResponse) { }
         
     func fetchCurrencies() -> [Currency]? {
         return nil
@@ -42,16 +37,12 @@ class MockLocalStore: LocalStore {
         return nil
     }
     
-    func create<T: NSManagedObject> ()-> T {
-        return T(context: mockPersistantContainer.viewContext)
-    }
-
-    func removeAllCurrencies() {
-        
-    }
+    func removeAllCurrencies() { }
     
-    func removeAllRateResponse() {
-        
+    func removeAllRateResponse() { }
+    
+    func createEntity<T: NSManagedObject> ()-> T {
+        return T(context: mockPersistantContainer.viewContext)
     }
 
     func updateLastStorageTime() {
@@ -59,12 +50,11 @@ class MockLocalStore: LocalStore {
     }
     
     // check if time is more than 3 second since last update
-    func checkIfNeedToFetchLatest() -> Bool {
+    func checkIfNeedToFetchFromRemote() -> Bool {
         if let lastStorageDate = UserDefaults.standard.value(forKey: "LastStorageTime") as? Date {
             let seconds = Date.now.seconds(from: lastStorageDate)
             return seconds >= 3
         }
         return true
     }
-
 }

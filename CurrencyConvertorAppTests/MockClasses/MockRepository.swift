@@ -32,7 +32,6 @@ class MockRepository: Repository {
         } else {
             return .failure(ConvertorError.unexpected)
         }
-
     }
     
     func readRateResponseFromFile() -> Result<[String : Any], Error> {
@@ -47,7 +46,5 @@ class MockRepository: Repository {
         } else {
             return .failure(ConvertorError.unexpected)
         }
-
     }
-
 }

@@ -9,22 +9,29 @@ import Foundation
 
 
 class DataService {
-    let repository: Repository
-    let localStore: LocalStore
+   private let repository: Repository
+   private let localStore: LocalStore
    
     init(repository: Repository, store: LocalStore) {
         self.repository = repository
         self.localStore = store
     }
     
-    func fetchCurrencies() async -> Result<[Currency], Error> {
+    func checkIfNeedToFetchFromRemote() -> Bool {
+        return localStore.checkIfNeedToFetchFromRemote()
+    }
+    
+    func updateLastStorageTime() {
+        localStore.updateLastStorageTime()
+    }
+    
+    func fetchCurrencies(_ fromRemote: Bool = true) async -> Result<[Currency], Error> {
         // check if data available in local store
-        if !localStore.checkIfNeedToFetchLatest(),
+        if !fromRemote,
             let currencies = localStore.fetchCurrencies(),
             !currencies.isEmpty {
             return .success(currencies)
         }
-        
         // remove local data
         localStore.removeAllCurrencies()
         
@@ -33,7 +40,7 @@ class DataService {
         switch result {
         case .success(let response):
             let currencies = response.map { currencyJson in
-                let currency: Currency = localStore.create()
+                let currency: Currency = localStore.createEntity()
                 currency.set(code: currencyJson.key, name: currencyJson.value)
                 return currency
             }
@@ -44,9 +51,9 @@ class DataService {
         }
     }
 
-    func fetchRates(base: String) async -> Result<RateResponse, any Error> {
+    func fetchRates(base: String, fromRemote: Bool = true) async -> Result<RateResponse, any Error> {
         //check if data available in local store
-        if !localStore.checkIfNeedToFetchLatest(),
+        if !fromRemote,
             let response = localStore.fetchRateResponse() {
             return .success(response)
         }
@@ -58,7 +65,7 @@ class DataService {
         let result = await repository.fetchRates(base: base)
         switch result {
         case .success(let response):
-            let resObj: RateResponse = localStore.create()
+            let resObj: RateResponse = localStore.createEntity()
             resObj.set(json: response)
             localStore.saveRateResponse(resObj) // save rate response in local store
             return .success(resObj)

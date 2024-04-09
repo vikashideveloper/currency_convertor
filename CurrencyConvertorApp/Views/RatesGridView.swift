@@ -64,10 +64,10 @@ struct RatesGridView: View {
 }
 
 #Preview {
-    let r: Rate = CoreDataStorage().create()
+    let r: Rate = CoreDataStorage().createEntity()
     r.set(code: "USD", rate: 4.5, symbol: "$")
     
-    let r2: Rate = CoreDataStorage().create()
+    let r2: Rate = CoreDataStorage().createEntity()
     r2.set(code: "INR", rate: 10.6, symbol: "₹")
     
     return RatesGridView(amount:2.5, rates: [r, r2])
