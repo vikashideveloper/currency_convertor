@@ -7,29 +7,32 @@
 
 import Foundation
 
-
-class DataService {
-   private let repository: Repository
-   private let localStore: LocalStore
-   
+final class DataService {
+    private let repository: Repository
+    private let localStore: LocalStore
+    private var shouldFetchFromRemote = true
+    
     init(repository: Repository, store: LocalStore) {
         self.repository = repository
         self.localStore = store
     }
     
-    func checkIfNeedToFetchFromRemote() -> Bool {
-        return localStore.checkIfNeedToFetchFromRemote()
+    func updateStatusIfNeedToFetchFromRemote() {
+        shouldFetchFromRemote = localStore.lastStorageTimeExceeded()
     }
     
-    func updateLastStorageTime() {
-        localStore.updateLastStorageTime()
+    func updateLastStorageTimeIfNeeded() {
+        if shouldFetchFromRemote {
+            localStore.updateLastStorageTime()
+            shouldFetchFromRemote = false
+        }
     }
     
-    func fetchCurrencies(_ fromRemote: Bool = true) async -> Result<[Currency], Error> {
+    func fetchCurrencies() async -> Result<[Currency], Error> {
         // check if data available in local store
-        if !fromRemote,
-            let currencies = localStore.fetchCurrencies(),
-            !currencies.isEmpty {
+        if !shouldFetchFromRemote,
+           let currencies = localStore.fetchCurrencies(),
+           !currencies.isEmpty {
             return .success(currencies)
         }
         // remove local data
@@ -50,17 +53,17 @@ class DataService {
             return .failure(error)
         }
     }
-
-    func fetchRates(base: String, fromRemote: Bool = true) async -> Result<RateResponse, any Error> {
+    
+    func fetchRates(base: String) async -> Result<RateResponse, Error> {
         //check if data available in local store
-        if !fromRemote,
-            let response = localStore.fetchRateResponse() {
+        if !shouldFetchFromRemote,
+           let response = localStore.fetchRateResponse() {
             return .success(response)
         }
-
+        
         // remove local data
         localStore.removeAllRateResponse()
-
+        
         //fetch data from remote
         let result = await repository.fetchRates(base: base)
         switch result {
@@ -73,5 +76,4 @@ class DataService {
             return .failure(error)
         }
     }
-
 }

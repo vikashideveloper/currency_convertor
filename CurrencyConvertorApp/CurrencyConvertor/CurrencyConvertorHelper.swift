@@ -1,6 +1,6 @@
 //
-//  CurrencyConvertor.swift
-//  Pay2dc_Assignment_vikash_Kumar
+//  CurrencyConvertorHelper.swift
+//  CurrencyConvertorApp
 //
 //  Created by Vikash Kumar on 06/04/24.
 //
@@ -8,8 +8,7 @@
 import Foundation
 import CoreData
 
-
-class CurrencyConvertor {
+final class CurrencyConvertorHelper {
     var baseRates = [Rate]()
     
     func convertFor(currencyCode: String) -> [Rate] {
@@ -18,13 +17,13 @@ class CurrencyConvertor {
         
         // rate of base [usd] currency with compare to given currency
         let baseCurrencyRate = 1/rate.rate
-    
+        
         let convertedRates = baseRates.map { rate in
-            let r = Rate(context: rate.managedObjectContext!)
-            r.code = rate.code
-            r.symbol = rate.symbol
-            r.rate = rate.rate * baseCurrencyRate
-            return r
+            let rateObj = Rate(context: rate.managedObjectContext!)
+            rateObj.code = rate.code
+            rateObj.symbol = rate.symbol
+            rateObj.rate = rate.rate * baseCurrencyRate
+            return rateObj
         }
         return convertedRates
     }

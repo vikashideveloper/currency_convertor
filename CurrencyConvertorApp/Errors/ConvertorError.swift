@@ -1,6 +1,6 @@
 //
 //  ConvertorError.swift
-//  Pay2dc_Assignment_vikash_Kumar
+//  CurrencyConvertorApp
 //
 //  Created by Vikash Kumar on 06/04/24.
 //
@@ -29,9 +29,7 @@ enum ConvertorError: Error {
             return .serverError(error.description)
         }
     }
-
 }
-
 
 extension ConvertorError {
     public var description: String {

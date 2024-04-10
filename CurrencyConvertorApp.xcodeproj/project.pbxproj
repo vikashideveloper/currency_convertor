@@ -16,7 +16,7 @@
 		79AA7D802BC43EB400C69120 /* MockRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79AA7D7B2BC43EB400C69120 /* MockRepository.swift */; };
 		79AA7D812BC43EB400C69120 /* CurrenciesResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 79AA7D7C2BC43EB400C69120 /* CurrenciesResponse.json */; };
 		79AA7D822BC43EB400C69120 /* RateResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 79AA7D7D2BC43EB400C69120 /* RateResponse.json */; };
-		79AA7DA72BC4449300C69120 /* CurrencyConvertor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79AA7D842BC4449200C69120 /* CurrencyConvertor.swift */; };
+		79AA7DA72BC4449300C69120 /* CurrencyConvertorHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79AA7D842BC4449200C69120 /* CurrencyConvertorHelper.swift */; };
 		79AA7DA82BC4449300C69120 /* CoreDataStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79AA7D862BC4449200C69120 /* CoreDataStorage.swift */; };
 		79AA7DAA2BC4449300C69120 /* LocalStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79AA7D892BC4449200C69120 /* LocalStore.swift */; };
 		79AA7DAB2BC4449300C69120 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79AA7D8C2BC4449200C69120 /* DataService.swift */; };
@@ -36,7 +36,7 @@
 		79AA7DB92BC4449300C69120 /* CurrencyConvertorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79AA7DA12BC4449300C69120 /* CurrencyConvertorViewModel.swift */; };
 		79AA7DBA2BC4449300C69120 /* ConvertorError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79AA7DA32BC4449300C69120 /* ConvertorError.swift */; };
 		79AA7DBB2BC4449300C69120 /* CurrencyConvertorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79AA7DA52BC4449300C69120 /* CurrencyConvertorApp.swift */; };
-		79AA7DBE2BC4461900C69120 /* CurrencyConvertor.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 79AA7DBC2BC4461900C69120 /* CurrencyConvertor.xcdatamodeld */; };
+		79F3EBB72BC6D77A00302A2F /* CurrencyConvertor.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 79F3EBB52BC6D77A00302A2F /* CurrencyConvertor.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,7 +69,7 @@
 		79AA7D7B2BC43EB400C69120 /* MockRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockRepository.swift; sourceTree = "<group>"; };
 		79AA7D7C2BC43EB400C69120 /* CurrenciesResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CurrenciesResponse.json; sourceTree = "<group>"; };
 		79AA7D7D2BC43EB400C69120 /* RateResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = RateResponse.json; sourceTree = "<group>"; };
-		79AA7D842BC4449200C69120 /* CurrencyConvertor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrencyConvertor.swift; sourceTree = "<group>"; };
+		79AA7D842BC4449200C69120 /* CurrencyConvertorHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrencyConvertorHelper.swift; sourceTree = "<group>"; };
 		79AA7D862BC4449200C69120 /* CoreDataStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStorage.swift; sourceTree = "<group>"; };
 		79AA7D892BC4449200C69120 /* LocalStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalStore.swift; sourceTree = "<group>"; };
 		79AA7D8C2BC4449200C69120 /* DataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
@@ -89,10 +89,10 @@
 		79AA7DA12BC4449300C69120 /* CurrencyConvertorViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrencyConvertorViewModel.swift; sourceTree = "<group>"; };
 		79AA7DA32BC4449300C69120 /* ConvertorError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConvertorError.swift; sourceTree = "<group>"; };
 		79AA7DA52BC4449300C69120 /* CurrencyConvertorApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrencyConvertorApp.swift; sourceTree = "<group>"; };
-		79AA7DBD2BC4461900C69120 /* CurrencyConvertor.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CurrencyConvertor.xcdatamodel; sourceTree = "<group>"; };
 		79F3EB922BC4D1C600302A2F /* debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = debug.xcconfig; sourceTree = "<group>"; };
 		79F3EB942BC4D38800302A2F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		79F3EB962BC4D52000302A2F /* release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = release.xcconfig; sourceTree = "<group>"; };
+		79F3EBB62BC6D77A00302A2F /* CurrencyConvertor.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CurrencyConvertor.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -207,7 +207,7 @@
 		79AA7D852BC4449200C69120 /* CurrencyConvertor */ = {
 			isa = PBXGroup;
 			children = (
-				79AA7D842BC4449200C69120 /* CurrencyConvertor.swift */,
+				79AA7D842BC4449200C69120 /* CurrencyConvertorHelper.swift */,
 			);
 			path = CurrencyConvertor;
 			sourceTree = "<group>";
@@ -215,7 +215,7 @@
 		79AA7D882BC4449200C69120 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				79AA7DBC2BC4461900C69120 /* CurrencyConvertor.xcdatamodeld */,
+				79F3EBB52BC6D77A00302A2F /* CurrencyConvertor.xcdatamodeld */,
 				79AA7D862BC4449200C69120 /* CoreDataStorage.swift */,
 			);
 			path = CoreData;
@@ -475,13 +475,13 @@
 				79AA7DAD2BC4449300C69120 /* Repository.swift in Sources */,
 				79AA7DBB2BC4449300C69120 /* CurrencyConvertorApp.swift in Sources */,
 				79AA7DBA2BC4449300C69120 /* ConvertorError.swift in Sources */,
-				79AA7DBE2BC4461900C69120 /* CurrencyConvertor.xcdatamodeld in Sources */,
+				79F3EBB72BC6D77A00302A2F /* CurrencyConvertor.xcdatamodeld in Sources */,
 				79AA7DAC2BC4449300C69120 /* OpenExchangeRepository.swift in Sources */,
 				79AA7DB12BC4449300C69120 /* Rate+CoreDataClass.swift in Sources */,
 				79AA7DAF2BC4449300C69120 /* Currency+CoreDataClass.swift in Sources */,
 				79AA7DB72BC4449300C69120 /* HomeView.swift in Sources */,
 				79AA7DA82BC4449300C69120 /* CoreDataStorage.swift in Sources */,
-				79AA7DA72BC4449300C69120 /* CurrencyConvertor.swift in Sources */,
+				79AA7DA72BC4449300C69120 /* CurrencyConvertorHelper.swift in Sources */,
 				79AA7DAE2BC4449300C69120 /* Utility.swift in Sources */,
 				79AA7DB92BC4449300C69120 /* CurrencyConvertorViewModel.swift in Sources */,
 				79AA7DB32BC4449300C69120 /* RateResponse+CoreDataClass.swift in Sources */,
@@ -720,7 +720,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.vikash.app.CurrencyConvertorAppTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -739,7 +739,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.vikash.app.CurrencyConvertorAppTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -826,12 +826,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		79AA7DBC2BC4461900C69120 /* CurrencyConvertor.xcdatamodeld */ = {
+		79F3EBB52BC6D77A00302A2F /* CurrencyConvertor.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				79AA7DBD2BC4461900C69120 /* CurrencyConvertor.xcdatamodel */,
+				79F3EBB62BC6D77A00302A2F /* CurrencyConvertor.xcdatamodel */,
 			);
-			currentVersion = 79AA7DBD2BC4461900C69120 /* CurrencyConvertor.xcdatamodel */;
+			currentVersion = 79F3EBB62BC6D77A00302A2F /* CurrencyConvertor.xcdatamodel */;
 			name = CurrencyConvertor.xcdatamodeld;
 			path = /Users/vikashkumar/Desktop/CurrencyConvertorApp/CurrencyConvertorApp/LocalStore/CoreData/CurrencyConvertor.xcdatamodeld;
 			sourceTree = "<group>";

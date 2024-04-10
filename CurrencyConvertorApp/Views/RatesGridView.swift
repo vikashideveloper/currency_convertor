@@ -8,14 +8,21 @@
 import SwiftUI
 
 struct RatesGridView: View {
-    let amount: Double
-    let rates: [Rate]
-    let layout = [
+    @State private var searchText = ""
+    @FocusState private var isTextFieldFocused: Bool
+    
+    init(amount: Double, rates: [Rate]) {
+        self.amount = amount
+        self.rates = rates
+    }
+    
+    private let amount: Double
+    private let rates: [Rate]
+    private let layout = [
         GridItem(.adaptive(minimum:150))
     ]
-    @State var searchText = ""
-    
-    var searchResults: [Rate] {
+
+    private var searchResults: [Rate] {
         let term = searchText.lowercased()
         if term.isEmpty {
             return rates
@@ -23,8 +30,6 @@ struct RatesGridView: View {
             return rates.filter { $0.code.lowercased().contains(term)}
         }
     }
-    
-    @FocusState var isTextFieldFocused: Bool
     
     var body: some View {
         VStack {
@@ -64,11 +69,11 @@ struct RatesGridView: View {
 }
 
 #Preview {
-    let r: Rate = CoreDataStorage().createEntity()
-    r.set(code: "USD", rate: 4.5, symbol: "$")
+    let rate1: Rate = CoreDataStorage().createEntity()
+    rate1.set(code: "USD", rate: 4.5, symbol: "$")
     
-    let r2: Rate = CoreDataStorage().createEntity()
-    r2.set(code: "INR", rate: 10.6, symbol: "₹")
+    let rate2: Rate = CoreDataStorage().createEntity()
+    rate2.set(code: "INR", rate: 10.6, symbol: "₹")
     
-    return RatesGridView(amount:2.5, rates: [r, r2])
+    return RatesGridView(amount:2.5, rates: [rate1, rate2])
 }

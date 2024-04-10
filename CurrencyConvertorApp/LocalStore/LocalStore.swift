@@ -1,6 +1,6 @@
 //
 //  LocalStore.swift
-//  Pay2dc_Assignment_vikash_Kumar
+//  CurrencyConvertorApp
 //
 //  Created by Vikash Kumar on 06/04/24.
 //
@@ -18,17 +18,18 @@ protocol LocalStore {
     func createEntity<T: NSManagedObject>()-> T
 }
 
-
 extension LocalStore {
-    func updateLastStorageTime() {
-        UserDefaults.standard.setValue(Date(), forKey: "LastStorageTime")
+    static var offlineDataStorageTimeKey: String { "OfflineDataStorageTimeKey" }
+    
+    func updateLastStorageTime(_ time: Date = .now) {
+        UserDefaults.standard.setValue(time, forKey: Self.offlineDataStorageTimeKey)
     }
     
-    // check if time is more than [30 minutes] since last update
-    func checkIfNeedToFetchFromRemote() -> Bool {
-        if let lastStorageDate = UserDefaults.standard.value(forKey: "LastStorageTime") as? Date {
+    // check if time is more than 30 minutes since last update
+    func lastStorageTimeExceeded() -> Bool {
+        if let lastStorageDate = UserDefaults.standard.value(forKey: Self.offlineDataStorageTimeKey) as? Date {
             let seconds = Date.now.seconds(from: lastStorageDate)
-            return seconds >= 2*60
+            return TimeInterval(seconds) >= 30*60
         }
         return true
     }

@@ -9,9 +9,7 @@
 import Foundation
 import CoreData
 
-
 extension Rate {
-
     @nonobjc public class func fetchRequest() -> NSFetchRequest<Rate> {
         return NSFetchRequest<Rate>(entityName: "Rate")
     }
@@ -19,9 +17,7 @@ extension Rate {
     @NSManaged public var code: String
     @NSManaged public var rate: Double
     @NSManaged public var symbol: String
-
 }
 
 extension Rate : Identifiable {
-
 }

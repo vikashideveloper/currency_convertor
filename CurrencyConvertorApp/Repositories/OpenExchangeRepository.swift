@@ -7,8 +7,9 @@
 
 import Foundation
 
-class OpenExchangeRepository: Repository {
-    let appId: String
+final class OpenExchangeRepository: Repository {
+    private let appId: String
+    
     init(appId: String) {
         self.appId = appId
     }
@@ -17,24 +18,29 @@ class OpenExchangeRepository: Repository {
         //fetch data from remote
         guard var url = URL(string: API.currencies.endPoint) else { return .failure(ConvertorError.badUrl)}
         url.append(queryItems: [URLQueryItem(name: "app_id", value: appId)])
-        let request = URLRequest(url: url)
+        
+        var request = URLRequest(url: url)
+        request.cachePolicy = .reloadIgnoringLocalAndRemoteCacheData
+        
         do {
             let (data, _) = try await URLSession.shared.data(for: request)
-
+            
             if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: String] {
                 return .success(json)
             }
             return .failure(ConvertorError.unexpected)
-
+            
         } catch {
             return .failure(ConvertorError.handleError(error as NSError))
         }
     }
-
-    func fetchRates(base: String) async -> Result<[String: Any], any Error> {
+    
+    func fetchRates(base: String) async -> Result<[String: Any], Error> {
         guard var url = URL(string: API.latest.endPoint) else { return .failure(ConvertorError.badUrl)}
         url.append(queryItems: [URLQueryItem(name: "app_id", value: appId), URLQueryItem(name: "base", value: base)])
-        let request = URLRequest(url: url)
+        
+        var request = URLRequest(url: url)
+        request.cachePolicy = .reloadIgnoringLocalAndRemoteCacheData
         
         do {
             let (data, _) = try await URLSession.shared.data(for: request)

@@ -1,6 +1,6 @@
 //
 //  LocalStore.swift
-//  Pay2dc_Assignment_vikash_Kumar
+//  CurrencyConvertorApp
 //
 //  Created by Vikash Kumar on 07/04/24.
 //
@@ -8,10 +8,10 @@
 import Foundation
 import CoreData
 
-class CoreDataStorage: NSObject, LocalStore {
-    let container = NSPersistentContainer(name: "CurrencyConvertor")
+final class CoreDataStorage: NSObject, LocalStore {
+    private let container = NSPersistentContainer(name: "CurrencyConvertor")
     
-    var viewContext: NSManagedObjectContext {
+    private var viewContext: NSManagedObjectContext {
         container.viewContext
     }
     
@@ -21,11 +21,11 @@ class CoreDataStorage: NSObject, LocalStore {
     }
     
     func saveCurrencies(_ currencies: [Currency]) {
-       try? viewContext.save()
+        try? viewContext.save()
     }
     
     func saveRateResponse(_ response: RateResponse) {
-       try? viewContext.save()
+        try? viewContext.save()
     }
     
     func fetchCurrencies() -> [Currency]? {
@@ -43,8 +43,8 @@ class CoreDataStorage: NSObject, LocalStore {
     func removeAllRateResponse() {
         let request = RateResponse.fetchRequest()
         if let result = try? viewContext.fetch(request),
-            let first = result.first {
-             viewContext.delete(first)
+           let first = result.first {
+            viewContext.delete(first)
         }
         try? viewContext.save()
     }
@@ -53,7 +53,7 @@ class CoreDataStorage: NSObject, LocalStore {
         let request = Currency.fetchRequest()
         if let result = try? viewContext.fetch(request) {
             for item in result {
-               viewContext.delete(item)
+                viewContext.delete(item)
             }
         }
         try? viewContext.save()

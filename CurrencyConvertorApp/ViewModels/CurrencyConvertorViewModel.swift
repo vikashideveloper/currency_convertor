@@ -9,17 +9,21 @@ import Foundation
 import SwiftUI
 
 @MainActor
-class CurrencyConvertorViewModel: ObservableObject {
-    let dataService: DataService!
-    let currencyConvertor: CurrencyConvertor!
+final class CurrencyConvertorViewModel: ObservableObject {
+    private let dataService: DataService!
+    private let currencyConvertor: CurrencyConvertorHelper!
+    private let defaultBase = "USD"
     
-    init(service: DataService) {
+    init(service: DataService, convertor: CurrencyConvertorHelper) {
         dataService = service
-        currencyConvertor = CurrencyConvertor()
+        currencyConvertor = convertor
     }
     
-    private let defaultBase = "USD"
-    private var canFetchFromRemote = false
+    var baseRates = [Rate]() {
+        didSet {
+            currencyConvertor.baseRates = baseRates
+        }
+    }
     
     @Published var amountToConvert: String = "" {
         didSet {
@@ -54,39 +58,34 @@ class CurrencyConvertorViewModel: ObservableObject {
         }
     }
     
-    @Published var rates = [Rate]() //converted rates will be assigned once conversion is finished by convertor.
+    @Published var rates = [Rate]() //converted rates, will be assigned once conversion is finished by convertor.
     @Published var error: Error?
-    @Published var loadingCurrencies = false
-    @Published var loadingRates = false
-
+    @Published var loadingState = LoadingState.none
     
-    func clearError() {
+    private func clearError() {
         error = nil
     }
     
-    func clearRates() {
+    private func clearRates() {
         rates = []
     }
-    
 }
 
 // connection to repository
 extension CurrencyConvertorViewModel {
     func fetchCurrencyConvertorData() async {
-        canFetchFromRemote = dataService.checkIfNeedToFetchFromRemote()
+        dataService.updateStatusIfNeedToFetchFromRemote()
         await fetchCurrencies()
         await fetchRates()
-        if canFetchFromRemote {
-            dataService.updateLastStorageTime()
-        }
+        dataService.updateLastStorageTimeIfNeeded()
     }
     
-    func fetchCurrencies() async {
+    private func fetchCurrencies() async {
         clearError()
-        loadingCurrencies = true
-        let result =  await dataService.fetchCurrencies(canFetchFromRemote)
-        loadingCurrencies = false
-
+        loadingState = .loadingCurrencies
+        let result =  await dataService.fetchCurrencies()
+        loadingState = .finished
+        
         switch result {
         case .success(let currencies):
             self.currencies = currencies.sorted(by: {$0.name < $1.name})
@@ -96,22 +95,23 @@ extension CurrencyConvertorViewModel {
             }
         case .failure(let error):
             self.error = error
+            self.currencies = []
         }
     }
     
-    func fetchRates() async {
-        loadingRates = true
-        let result = await dataService.fetchRates(base: defaultBase, fromRemote: canFetchFromRemote)
-        loadingRates = false
-
+    private func fetchRates() async {
+        loadingState = .loadingRates
+        let result = await dataService.fetchRates(base: defaultBase)
+        loadingState = .finished
+        
         switch result {
         case .failure(let error):
             self.error = error
-
+            baseRates = []
         case .success(let response):
             // save base rates in convertor object, so it can perform the conversion based on these.
             let rates = response.conversionRates.sorted(by: {$0.code < $1.code})
-            currencyConvertor.baseRates = rates
+            baseRates = rates
             convertRates()
         }
     }
@@ -121,7 +121,7 @@ extension CurrencyConvertorViewModel {
 extension CurrencyConvertorViewModel {
     func convertRates() {
         if let currency = selectedCurrency, amount > 0 {
-           rates = currencyConvertor.convertFor(currencyCode: currency.code)
+            rates = currencyConvertor.convertFor(currencyCode: currency.code)
         }
     }
 }
@@ -131,7 +131,19 @@ extension CurrencyConvertorViewModel {
         let appId = Utility.infoForKey("OE_APP_ID")
         let repository = OpenExchangeRepository(appId: appId)
         let storage = CoreDataStorage()
-        let viewModel = CurrencyConvertorViewModel(service: DataService(repository: repository, store: storage))
+        let dataService = DataService(repository: repository, store: storage)
+        
+        let convertor = CurrencyConvertorHelper()
+        let viewModel = CurrencyConvertorViewModel(service: dataService, convertor: convertor)
         return viewModel
+    }
+}
+
+extension CurrencyConvertorViewModel {
+    enum LoadingState {
+        case loadingCurrencies
+        case loadingRates
+        case finished
+        case none
     }
 }

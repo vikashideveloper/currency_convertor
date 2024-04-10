@@ -11,9 +11,8 @@ import CoreData
 
 @objc(Rate)
 public class Rate: NSManagedObject {
-
+    
 }
-
 
 extension Rate {
     func set(code: String, rate: Double, symbol: String) {
@@ -21,8 +20,8 @@ extension Rate {
         self.rate = rate
         self.symbol = symbol
     }
+    
     func displayPrice(for amount: Double = 1) -> String {
         return String(format: "\(symbol) %.2f", rate * amount)
     }
-    
 }

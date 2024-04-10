@@ -10,13 +10,17 @@ import Combine
 
 struct HomeView: View {
     @EnvironmentObject var viewModel: CurrencyConvertorViewModel
-    @State var isCurrencySelectorPresented = false
-    
-    var isLoading: Bool {
-        viewModel.loadingRates || viewModel.loadingCurrencies
+    @State private var isCurrencySelectorPresented = false
+    @FocusState private var isTextFieldFocused: Bool
+
+    private var isLoading: Bool {
+        viewModel.loadingState == .loadingRates || viewModel.loadingState == .loadingCurrencies
     }
     
-    @FocusState var isTextFieldFocused: Bool
+    private func loadConvertorData() async {
+        viewModel.error = nil
+        await viewModel.fetchCurrencyConvertorData()
+    }
     
     var body: some View {
         NavigationStack {
@@ -32,7 +36,6 @@ struct HomeView: View {
                             RoundedRectangle(cornerRadius: 8)
                                 .stroke(.blue)
                         }
-                    
                     // currency dropdown button
                     Button {
                         if !isLoading {
@@ -40,11 +43,10 @@ struct HomeView: View {
                             isCurrencySelectorPresented.toggle()
                         }
                     } label: {
-                        
                         HStack {
-                            if viewModel.loadingCurrencies {
+                            if viewModel.loadingState == .loadingCurrencies {
                                 ProgressView()
-                                  .progressViewStyle(CircularProgressViewStyle(tint: .blue))
+                                    .progressViewStyle(CircularProgressViewStyle(tint: .blue))
                             } else {
                                 Text(viewModel.selectedCurrency?.code ?? "Select Currency")
                                 Image(systemName: "chevron.down")
@@ -56,22 +58,25 @@ struct HomeView: View {
                             RoundedRectangle(cornerRadius: 8)
                                 .stroke()
                         }
-                        
                     }
                 }
                 
                 // error view if any error occurrs
                 if let error = viewModel.error as? ConvertorError {
-                    ErrorView(error: error) {
+                    ErrorView(error: error, onClose: {
                         viewModel.error = nil
-                    }
+                    }, onRetry: {
+                        Task {
+                            await loadConvertorData()
+                        }
+                    })
                 }
                 
                 // progress view for loading rates
-                if viewModel.loadingRates {
+                if viewModel.loadingState == .loadingRates {
                     VStack {
                         ProgressView()
-                          .progressViewStyle(CircularProgressViewStyle(tint: .blue))
+                            .progressViewStyle(CircularProgressViewStyle(tint: .blue))
                         Text("Fetching rates...")
                     }
                 } else {
@@ -79,7 +84,7 @@ struct HomeView: View {
                         RatesGridView(amount:viewModel.amount, rates: viewModel.rates)
                     }
                 }
-               
+                
                 Spacer()
             }
             .padding()
@@ -87,16 +92,13 @@ struct HomeView: View {
             .sheet(isPresented: $isCurrencySelectorPresented) {
                 CurrencyListView(isPresented: $isCurrencySelectorPresented, selected: viewModel.selectedCurrency)
             }
-//            .ignoresSafeArea(edges: .bottom)
         }
         .onTapGesture {
             isTextFieldFocused = false
         }
-
         .onAppear {
             Task {
-                // fetch currencies and rates
-                await viewModel.fetchCurrencyConvertorData()
+                await loadConvertorData()
             }
         }
     }

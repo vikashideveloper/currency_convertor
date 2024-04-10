@@ -11,7 +11,7 @@ import CoreData
 
 @objc(Currency)
 public class Currency: NSManagedObject {
-
+    
 }
 
 extension Currency {
@@ -20,7 +20,6 @@ extension Currency {
         self.name = name
     }
 }
-
 
 protocol CurrencyProtocol {
     var code: String { get set }

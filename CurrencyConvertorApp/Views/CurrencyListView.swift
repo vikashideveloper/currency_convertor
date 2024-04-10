@@ -11,7 +11,6 @@ struct CurrencyListView: View {
     @EnvironmentObject var viewModel: CurrencyConvertorViewModel
     @Binding var isPresented: Bool
     @State private var searchText = ""
-
     var selected: Currency?
     
     var body: some View {
@@ -33,7 +32,6 @@ struct CurrencyListView: View {
                     }
                 }
                 .navigationTitle("Currencies")
-
             }
         }
         .searchable(text: $searchText, prompt: "Search")
@@ -49,16 +47,15 @@ struct CurrencyListView: View {
     }
 }
 
-
 #Preview {
     let viewModel = CurrencyConvertorViewModel.instantiateWithDI()
-    let c1: Currency = CoreDataStorage().createEntity()
-    c1.set(code: "USD", name: "United State Dollar")
+    let currency1: Currency = CoreDataStorage().createEntity()
+    currency1.set(code: "USD", name: "United State Dollar")
     
-    let c2: Currency = CoreDataStorage().createEntity()
-    c2.set(code: "INR", name: "Indian Ruppes")
-
-    viewModel.currencies = [c1, c2]
+    let currency2: Currency = CoreDataStorage().createEntity()
+    currency2.set(code: "INR", name: "Indian Ruppes")
+    
+    viewModel.currencies = [currency1, currency2]
     return CurrencyListView(isPresented: .constant(true))
         .environmentObject(viewModel)
 }

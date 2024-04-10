@@ -8,8 +8,15 @@
 import SwiftUI
 
 struct ErrorView: View {
-    let error: ConvertorError
-    let onClose: (()-> Void)?
+    private let error: ConvertorError
+    private let onClose: (()-> Void)?
+    private let onRetry: (()-> Void)?
+
+    init(error: ConvertorError, onClose: (() -> Void)? = nil, onRetry: (() -> Void)? = nil) {
+        self.error = error
+        self.onClose = onClose
+        self.onRetry = onRetry
+    }
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
@@ -19,6 +26,12 @@ struct ErrorView: View {
                     .font(.headline)
                 Text(error.description)
                 
+                Button {
+                onRetry?()
+                } label: {
+                    Text("Retry")
+                }
+
             }
             .padding(25)
             .background {
@@ -32,7 +45,6 @@ struct ErrorView: View {
                 Image(systemName: "multiply.circle")
             }
             .frame(width: 35, height: 35)
-
         }
     }
 }

@@ -1,6 +1,6 @@
 //
 //  Utility.swift
-//  Pay2dc_Assignment_vikash_Kumar
+//  CurrencyConvertorApp
 //
 //  Created by Vikash Kumar on 07/04/24.
 //
@@ -12,7 +12,7 @@ struct Utility {
         let result = Locale.availableIdentifiers.map { Locale(identifier: $0) }.first { $0.currency?.identifier == code }
         return result?.currencySymbol ?? ""
     }
-
+    
     static func infoForKey(_ key: String) -> String {
         return (Bundle.main.infoDictionary?[key] as? String)?
             .replacingOccurrences(of: "\\", with: "") ?? ""

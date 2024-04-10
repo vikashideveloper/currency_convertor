@@ -1,6 +1,6 @@
 //
 //  MockRepository.swift
-//  Pay2dc_Assignment_vikash_KumarTests
+//  CurrencyConvertorAppTests
 //
 //  Created by Vikash Kumar on 07/04/24.
 //
@@ -8,16 +8,16 @@
 import Foundation
 @testable import CurrencyConvertorApp
 
-class MockRepository: Repository {
-    var resultCurrencies: Result<[String : String], Error>!
-    var resultRateResponse: Result<[String : Any], Error>!
-
+final class MockRepository: Repository {
+    var resultCurrencies: Result<[String : String], Error>?
+    var resultRateResponse: Result<[String : Any], Error>?
+    
     func fetchCurrencies() async -> Result<[String : String], Error> {
-        return resultCurrencies
+        return resultCurrencies ?? .failure(ConvertorError.unexpected)
     }
     
     func fetchRates(base: String) async -> Result<[String : Any],  Error> {
-        return resultRateResponse
+        return resultRateResponse ?? .failure(ConvertorError.unexpected)
     }
     
     func readCurrenciesFromFile() -> Result<[String : String], Error> {

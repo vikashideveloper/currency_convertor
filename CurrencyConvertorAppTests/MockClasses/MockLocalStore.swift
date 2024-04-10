@@ -1,6 +1,6 @@
 //
 //  MockLocalStore.swift
-//  Pay2dc_Assignment_vikash_KumarTests
+//  CurrencyConvertorAppTests
 //
 //  Created by Vikash Kumar on 07/04/24.
 //
@@ -9,34 +9,41 @@ import Foundation
 import CoreData
 @testable import CurrencyConvertorApp
 
-class MockLocalStore: LocalStore {
-   private lazy var mockPersistantContainer: NSPersistentContainer = {
-            let container = NSPersistentContainer(name: "CurrencyConvertor")
-            let description = NSPersistentStoreDescription()
-            description.type = NSInMemoryStoreType
-            description.shouldAddStoreAsynchronously = false
-            container.persistentStoreDescriptions = [description]
-            container.loadPersistentStores { (description, error) in
-                precondition( description.type == NSInMemoryStoreType )
-                if let error = error {
-                    fatalError("Create an in-memory coordinator failed \(error)")
-                }
+final class MockLocalStore: LocalStore {
+    private lazy var mockPersistantContainer: NSPersistentContainer = {
+        let container = NSPersistentContainer(name: "CurrencyConvertor")
+        let description = NSPersistentStoreDescription()
+        description.type = NSInMemoryStoreType
+        description.shouldAddStoreAsynchronously = false
+        container.persistentStoreDescriptions = [description]
+        container.loadPersistentStores { (description, error) in
+            precondition( description.type == NSInMemoryStoreType )
+            if let error = error {
+                fatalError("Create an in-memory coordinator failed \(error)")
             }
-            return container
-        }()
-
-    func saveCurrencies(_ currencies: [Currency]) { }
-    
-    func saveRateResponse(_ response: RateResponse) { }
+        }
+        return container
+    }()
         
     func fetchCurrencies() -> [Currency]? {
-        return nil
+        let currency1: Currency = createEntity()
+        let currency2: Currency = createEntity()
+        let currency3: Currency = createEntity()
+        return [currency1, currency2, currency3]
     }
     
     func fetchRateResponse() -> RateResponse? {
-        return nil
+        let response: RateResponse = createEntity()
+        let rate1: Rate = createEntity()
+        let rate2: Rate = createEntity()
+        response.rates = [rate1, rate2]
+        return response
     }
     
+    func saveCurrencies(_ currencies: [Currency]) { }
+    
+    func saveRateResponse(_ response: RateResponse) { }
+
     func removeAllCurrencies() { }
     
     func removeAllRateResponse() { }
@@ -44,17 +51,8 @@ class MockLocalStore: LocalStore {
     func createEntity<T: NSManagedObject> ()-> T {
         return T(context: mockPersistantContainer.viewContext)
     }
-
-    func updateLastStorageTime() {
-        UserDefaults.standard.setValue(Date(), forKey: "LastStorageTime")
-    }
     
-    // check if time is more than 3 second since last update
-    func checkIfNeedToFetchFromRemote() -> Bool {
-        if let lastStorageDate = UserDefaults.standard.value(forKey: "LastStorageTime") as? Date {
-            let seconds = Date.now.seconds(from: lastStorageDate)
-            return seconds >= 3
-        }
-        return true
+    func removeLastStorageTime() {
+        UserDefaults.standard.removeObject(forKey: Self.offlineDataStorageTimeKey)
     }
 }
